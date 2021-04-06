@@ -17,7 +17,15 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "sunbird-ed-search-filter": [
+        "dist/sunbird-ed-search-filter"
+      ],
+      "sunbird-ed-search-filter/*": [
+        "dist/sunbird-ed-search-filter/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
