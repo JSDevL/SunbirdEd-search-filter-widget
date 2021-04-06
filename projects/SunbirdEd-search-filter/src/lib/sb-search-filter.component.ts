@@ -1,20 +1,18 @@
 import {Component, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'lib-SunbirdEd-search-filter',
+  selector: 'sb-search-filter',
   template: `
     <p>
-      sunbird-ed-search-filter works!
+      sb-search-filter works!
     </p>
   `,
   styles: []
 })
-export class SunbirdEdSearchFilterComponent implements OnInit {
-
+export class SbSearchFilterComponent implements OnInit {
   constructor() {
   }
 
   ngOnInit() {
   }
-
 }

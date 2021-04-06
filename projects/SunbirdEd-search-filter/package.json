@@ -1,5 +1,5 @@
 {
-  "name": "sunbird-ed-search-filter",
+  "name": "@project-sunbird/search-filter-widget",
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^8.2.14",

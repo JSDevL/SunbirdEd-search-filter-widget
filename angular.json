@@ -12,7 +12,7 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
+      "prefix": "sb",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -127,31 +127,31 @@
     },
     "SunbirdEd-search-filter": {
       "projectType": "library",
-      "root": "projects/sunbird-ed-search-filter",
-      "sourceRoot": "projects/sunbird-ed-search-filter/src",
-      "prefix": "lib",
+      "root": "projects/SunbirdEd-search-filter",
+      "sourceRoot": "projects/SunbirdEd-search-filter/src",
+      "prefix": "sb",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/sunbird-ed-search-filter/tsconfig.lib.json",
-            "project": "projects/sunbird-ed-search-filter/ng-package.json"
+            "tsConfig": "projects/SunbirdEd-search-filter/tsconfig.lib.json",
+            "project": "projects/SunbirdEd-search-filter/ng-package.json"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/sunbird-ed-search-filter/src/test.ts",
-            "tsConfig": "projects/sunbird-ed-search-filter/tsconfig.spec.json",
-            "karmaConfig": "projects/sunbird-ed-search-filter/karma.conf.js"
+            "main": "projects/SunbirdEd-search-filter/src/test.ts",
+            "tsConfig": "projects/SunbirdEd-search-filter/tsconfig.spec.json",
+            "karmaConfig": "projects/SunbirdEd-search-filter/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/sunbird-ed-search-filter/tsconfig.lib.json",
-              "projects/sunbird-ed-search-filter/tsconfig.spec.json"
+              "projects/SunbirdEd-search-filter/tsconfig.lib.json",
+              "projects/SunbirdEd-search-filter/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

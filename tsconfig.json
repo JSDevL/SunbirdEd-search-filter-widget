@@ -19,11 +19,11 @@
       "dom"
     ],
     "paths": {
-      "sunbird-ed-search-filter": [
-        "dist/sunbird-ed-search-filter"
+      "@project-sunbird/search-filter-widget": [
+        "dist/search-filter-widget"
       ],
-      "sunbird-ed-search-filter/*": [
-        "dist/sunbird-ed-search-filter/*"
+      "@project-sunbird/search-filter-widget/*": [
+        "dist/search-filter-widget/*"
       ]
     }
   },
