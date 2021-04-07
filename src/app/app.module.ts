@@ -3,7 +3,9 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { SbSearchFilterModule } from '@project-sunbird/search-filter-widget';
+import { CommonFormElementsModule } from 'common-form-elements';
 import { RouterModule } from '@angular/router';
+import {CommonModule} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -11,7 +13,9 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     SbSearchFilterModule,
+    CommonFormElementsModule,
     RouterModule.forRoot([])
   ],
   providers: [],

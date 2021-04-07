@@ -1,1 +1,279 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~common-consumption-styles/assets/_variables.scss";
+@import "~common-consumption-styles/assets/_colors.scss";
+
+html[data-theme=Default][layout=joy] {
+  --primary-hs: 206, 100%;
+  --primary-color: #024F9D;
+  --primary-300: #74B9EB;
+  --primary-200: #AFCCE1;
+  --primary-800: hsl(var(--primary-hs), 40%);
+  --primary-100: #f1f1e7;
+  --primary-300: #ececde;
+  --sbt-filter-bar-bg: var(--white);
+  --sb-search-btn-bg: #333333;
+  --sb-search-btn-text: #ffffff;
+  --cc-grade-pill-container-bg: #e9e8d8;
+}
+
+html[data-theme=Default] {
+  --primary-theme: var(--primary-color);
+  --sbt-body-bg: #E5EDF5;
+  --sbt-header-bg: var(--primary-300);
+  --sbt-menu-bg: var(--sbt-header-bg);
+  --sbt-page-header-bg: var(--sbt-menu-bg);
+  --sbt-body-bg2: #f0f7ff;
+  --sbt-filter-bar-bg: var(--white);
+  --sbt-box-shadow-black: rgba(0, 0, 0, 0.1);
+  --sbt-box-shadow-6px: 0.375rem 0.375rem 0.125rem 0 var(--sbt-box-shadow-black);
+  --sbt-box-shadow-3px: 0.1875rem 0.1875rem 0.125rem 0 var(--sbt-box-shadow-black);
+  --sbt-box-shadow: rgba(128, 167, 206, 1);
+  --sbt-footer-bg: #ffffff;
+  --sbt-theme-purple-selectbox: #6841B3;
+  --sbt-theme-green-selectbox: #008840;
+  --sbt-theme-blue-selectbox: #0531FF;
+  --sbt-theme-light-blue-selectbox: #108DE1;
+  --sbt-theme-purple-selectbox-lbg: #F2EEFF;
+  --sbt-theme-green-selectbox-lbg: #E0F5EA;
+  --sbt-theme-blue-selectbox-lbg: #E5EDF5;
+  --sbt-theme-light-blue-selectbox-lbg: #E9F5FF;
+  --sbt-pill-hs: 212, 100%;
+  --sbt-pill-bg: hsl(var(--sbt-pill-hs), 90%);
+  --sbt-pill-bg-active: hsl(var(--sbt-pill-hs), 50%);
+  --sbt-pill-text: #000000;
+  --sbt-pill-text-hover: #ffffff;
+  --sbt-compt-bg: #E9E8D9;
+  --sbt-bradius: 0.125rem;
+  --sbt-bradius-8: calc(var(--sbt-bradius) * 4);
+  --sbt-bradius-16: calc(var(--sbt-bradius) * 8);
+  --sbt-bradius-24: calc(var(--sbt-bradius) * 12);
+  --sbt-bradius-32: calc(var(--sbt-bradius) * 16);
+  --sb-container-bg: var(--white);
+  --sbt-textbooks: #0091FF;
+  --sbt-courses: #0531FF;
+  --sbt-quizzes: #0C989B;
+  --sbt-tests: #E02020;
+  --sbt-stories: #008840;
+  --sbt-poems: #B620E0;
+  --sbt-tv: #E7800B;
+  --sbt-podcasts: #7B4EFF;
+  --sbt-all: #4DBD09;
+  --sbt-textbooks-text: var(--sbt-textbooks);
+  --sbt-textbooks-bg: var(--sbt-textbooks);
+  --sbt-courses-text: var(--sbt-courses);
+  --sbt-courses-bg: var(--sbt-courses);
+  --sbt-quizzes-text: var(--sbt-quizzes);
+  --sbt-quizzes-bg: var(--sbt-quizzes);
+  --sbt-tests-text: var(--sbt-tests);
+  --sbt-tests-bg: var(--sbt-tests);
+  --sbt-stories-text: var(--sbt-stories);
+}
+
+html[layout=joy] {
+  --primary-theme: #FFD954;
+  --sbt-header-bg: var(--primary-theme);
+  --sbt-body-bg: #F2F2EA;
+  --sbt-body-bg2: #E9E8D9;
+  --sbt-primary-bg: var(--primary-theme);
+  --sbt-border-chapter: #E4E8EE;
+  --sbt-language-dropdown-bg: var(--white);
+  --sbt-language-dropdown-item: #008840;
+  --sbt-language-selectbox: #008840;
+  --sbt-language-dropdown-item-hover-bg: rgba(0, 0, 0, .05);
+  --sbt-language-dropdown-item-hover-text: #008840;
+  --sb-modal-header-text: var(--black);
+  --sb-modal-content-bg: var(--sbt-compt-bg);
+  --sb-modal-actions-bg: var(--sbt-compt-bg);
+  --df-primary-bg: #FFD954;
+  --df-gray-bg: #E9E8D9;
+  --sbt-bradius: 0.125rem;
+  --sbt-bradius-xs: calc(var(--sbt-bradius) * 4);
+  --sbt-bradius-sm: calc(var(--sbt-bradius) * 8);
+  --sbt-bradius-md: calc(var(--sbt-bradius) * 12);
+  --sbt-bradius-lg: calc(var(--sbt-bradius) * 16);
+}
+
+.cfe-multiselect-container {
+  ul, li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  margin-bottom: 1rem;
+
+  .cfe-multiselect-label {
+    margin: .5rem 0;
+    display: flex;
+    color: var(--sbfield-label-text);
+    font-size: var(--font-size-normal);
+  }
+
+  .cfe-multiselect-field {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+
+    box-sizing: border-box;
+
+    height: 2.5rem;
+    line-height: 2.5rem;
+    border-radius: var(--sbt-bradius-24) !important;
+
+    background: var(--sbt-theme-purple-selectbox-lbg);
+    color: var(--sbt-theme-purple-selectbox);
+
+    font-weight: 700;
+    font-size: .75rem;
+    width: 100%;
+    min-height: 2rem;
+
+    border: none;
+    padding: 0 1.25rem;
+    box-shadow: var(--sbt-box-shadow-3px);
+
+    border-color: var(--gray-200);
+    flex-wrap: wrap;
+
+    cursor: pointer;
+    word-wrap: break-word;
+    white-space: normal;
+    outline: 0;
+    min-width: 14em;
+
+    transition: box-shadow .1s ease, width .1s ease;
+
+    -webkit-tap-highlight-color: transparent;
+    text-align: left;
+
+    .cfe-multiselect-field-label-container {
+      order: 1;
+      flex-grow: 1;
+
+      .cfe-multiselect-field-label {
+      }
+    }
+
+    .cfe-multiselect-field-caret {
+      order: 2;
+      box-sizing: border-box;
+      padding-top: 0.2rem;
+    }
+  }
+
+  .cfe-multiselect-dropdown {
+    &[hidden] {
+      display: block;
+    }
+
+    overflow-x: hidden;
+    margin-top: .25rem;
+    border-radius: var(--sbt-bradius-24);
+    background: var(--sbt-theme-purple-selectbox-lbg);
+
+    width: 100%;
+    position: absolute;
+    z-index: 10000;
+    top: 100%;
+    left: 0;
+
+    -webkit-animation-iteration-count: 1;
+    animation-iteration-count: 1;
+    -webkit-animation-duration: .3s;
+    animation-duration: .3s;
+    -webkit-animation-timing-function: ease;
+    animation-timing-function: ease;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+
+    opacity: 0;
+    transform: scaleY(0);
+
+    li {
+      position: relative;
+      display: flex;
+      padding: 0 1.25rem;
+      cursor: pointer;
+
+      & > div {
+        display: block;
+        width: 100%;
+      }
+
+      &.selected-option {
+        color: var(--sbt-theme-purple-selectbox);
+        font-weight: 700;
+        background: rgba(0,0,0,.05);
+      }
+    }
+
+    .cfe-multiselect-dropdown-item {
+      flex-grow: 1;
+    }
+  }
+
+  &.closed {
+    .cfe-multiselect-dropdown {
+      -webkit-animation-name: slideOutY;
+      animation-name: slideOutY;
+      transform-origin: top center;
+    }
+  }
+
+  &.open {
+    .cfe-multiselect-field {
+      box-shadow: 0 2px 3px 0 rgba(34, 36, 38, .15);
+    }
+
+    .cfe-multiselect-dropdown {
+      -webkit-animation-name: slideInY;
+      animation-name: slideInY;
+      transform-origin: top center;
+    }
+  }
+}
+
+@-webkit-keyframes slideInY {
+  0% {
+    opacity: 0;
+    transform: scaleY(0)
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1)
+  }
+}
+
+@keyframes slideInY {
+  0% {
+    opacity: 0;
+    transform: scaleY(0)
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1)
+  }
+}
+
+@-webkit-keyframes slideOutY {
+  0% {
+    opacity: 1;
+    transform: scaleY(1)
+  }
+  100% {
+    opacity: 0;
+    transform: scaleY(0)
+  }
+}
+
+@keyframes slideOutY {
+  0% {
+    opacity: 1;
+    transform: scaleY(1)
+  }
+  100% {
+    opacity: 0;
+    transform: scaleY(0)
+  }
+}

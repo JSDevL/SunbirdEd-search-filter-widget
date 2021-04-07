@@ -4,33 +4,12 @@
 <hr>
 <hr>
 
-<sb-search-filter [baseSearchFilter]="{ 'se_boards': ['state (kerala)'] }"
+<sb-search-facet-filter [baseSearchFilter]="{ 'se_mediums': ['english'] }"
                   [searchResultFacets]="searchResultFacets"
                   [filterFormTemplateConfig]="filterFormTemplateConfig"
-                  [filterFieldTemplate]="filterFieldTemplate"
-                  (searchFilterChange)="currentSearchFilter = $event"
+                  (searchFilterChange)="searchContent($event)"
                   #sbSearchFilterComponent>
-
-  <ng-template #filterFieldTemplate
-               let-templateConfig="templateConfig"
-               let-allValues="allFilterValues"
-               let-selected="selectedFilterValues">
-    <div>
-      <div>
-        <label>{{templateConfig.labelText}}</label>
-      </div>
-      <div>
-        <label>Selected: {{selected | json}}</label>
-      </div>
-      <select (change)="sbSearchFilterComponent.onFilterChange(templateConfig.facet, [$event.target.value])">
-        <option *ngFor="let value of allValues" [value]="value">{{value}}</option>
-      </select>
-      <hr>
-    </div>
-
-  </ng-template>
-
-</sb-search-filter>
+</sb-search-facet-filter>
 
 <pre>
   {{currentSearchFilter | json}}

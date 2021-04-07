@@ -6,35 +6,33 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  SimpleChanges,
-  TemplateRef
+  SimpleChanges
 } from '@angular/core';
 import {Subject} from 'rxjs';
 import {Facet, FacetValue, IFilterFacet, ISearchFilter} from './facets';
-import {distinctUntilChanged, map, takeUntil, tap} from 'rxjs/operators';
+import {map, takeUntil, tap} from 'rxjs/operators';
 import {IFilterFieldTemplateConfig} from './filter-config';
 import {ActivatedRoute, Router} from '@angular/router';
+import {cloneDeep, isEqual} from 'lodash-es';
+import {FieldConfig} from 'common-form-elements';
+import {SearchResultFacetFormConfigAdapter} from './search-result-facet-form-config-adapter';
 
 @Component({
-  selector: 'sb-search-filter',
+  selector: 'sb-search-facet-filter',
   template: `
-    <ng-container *ngIf="searchResultFacetsMap">
-      <ng-container *ngFor="let config of filterFormTemplateConfig">
-        <ng-container *ngTemplateOutlet="filterFieldTemplate; context: {
-            templateConfig: config,
-            allFilterValues: (searchResultFacetsMap[config.facet] || []),
-            selectedFilterValues: currentFilter[config.facet]
-        }"></ng-container>
-      </ng-container>
-    </ng-container>
+    <sb-form *ngIf="formConfig"
+             [fieldTemplateClass]="'normalize'"
+             [config]="formConfig"
+             (valueChanges)="onFilterChange($event)">
+    </sb-form>
   `,
-  styles: []
+  styles: [],
+  providers: [SearchResultFacetFormConfigAdapter]
 })
-export class SbSearchFilterComponent implements OnInit, OnChanges, OnDestroy {
+export class SbSearchFacetFilterComponent implements OnInit, OnChanges, OnDestroy {
   private static readonly DEFAULT_SUPPORTED_FILTER_ATTRIBUTES = ['se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects', 'channel', 'audience', 'publisher'];
 
-  @Input() readonly filterFieldTemplate = TemplateRef;
-  @Input() readonly supportedFilterAttributes: Facet[] = SbSearchFilterComponent.DEFAULT_SUPPORTED_FILTER_ATTRIBUTES;
+  @Input() readonly supportedFilterAttributes: Facet[] = SbSearchFacetFilterComponent.DEFAULT_SUPPORTED_FILTER_ATTRIBUTES;
   @Input() readonly searchResultFacets: IFilterFacet[] = [];
   @Input() readonly baseSearchFilter: ISearchFilter = {};
   @Input() readonly filterFormTemplateConfig: IFilterFieldTemplateConfig[] = [];
@@ -43,41 +41,42 @@ export class SbSearchFilterComponent implements OnInit, OnChanges, OnDestroy {
   private onResetSearchFilter?: ISearchFilter;
   private unsubscribe$ = new Subject<void>();
 
-  public searchResultFacetsMap: {[facet in Facet]: FacetValue[]} = {};
   public currentFilter?: ISearchFilter;
+  public formConfig?: FieldConfig<FacetValue>[];
 
   constructor(
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private searchResultFacetFormConfigAdapter: SearchResultFacetFormConfigAdapter
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     const newSearchResultFacetsValue: IFilterFacet[] = changes.searchResultFacets && changes.searchResultFacets.currentValue;
     if (newSearchResultFacetsValue) {
-      this.searchResultFacetsMap = newSearchResultFacetsValue.reduce<{[facet in Facet]: FacetValue[]}>((acc, entry) => {
-        acc[entry.name] = entry.values.map(v => v.name);
-        return acc;
-      }, {});
+      this.formConfig = this.searchResultFacetFormConfigAdapter.map(
+        newSearchResultFacetsValue,
+        this.filterFormTemplateConfig,
+        this.currentFilter,
+      );
     }
   }
 
   ngOnInit() {
     this.activatedRoute.queryParams
       .pipe(
-        distinctUntilChanged((a , b) => JSON.stringify(a) === JSON.stringify(b)),
         map(this.buildAggregatedSearchFilter.bind(this)),
         tap(this.saveOnResetSearchFilter.bind(this)),
         tap(this.updateCurrentFilter.bind(this)),
         takeUntil(this.unsubscribe$)
       )
-      .subscribe((v: ISearchFilter) => {
-        this.searchFilterChange.emit(v);
-      });
+      .subscribe();
   }
 
-  onFilterChange(facet: Facet, values: FacetValue[]) {
-    const aggregatedSearchFilter = this.buildAggregatedSearchFilter();
-    aggregatedSearchFilter[facet] = values;
+  onFilterChange(searchFilter: ISearchFilter) {
+    const aggregatedSearchFilter = {
+      ...this.buildAggregatedSearchFilter(),
+      ...searchFilter
+    };
     this.updateQueryParams(aggregatedSearchFilter);
   }
 
@@ -88,15 +87,17 @@ export class SbSearchFilterComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateCurrentFilter(searchFilter: ISearchFilter) {
-    this.currentFilter = searchFilter;
-    this.searchFilterChange.emit(searchFilter);
+    if (!isEqual(this.currentFilter, searchFilter)) {
+      this.currentFilter = searchFilter;
+      this.searchFilterChange.emit(this.currentFilter);
+    }
   }
 
   private updateQueryParams(searchFilter: ISearchFilter) {
     this.router.navigate([], {
       queryParams: {
         ...(() => {
-          const queryParams = JSON.parse(JSON.stringify(this.activatedRoute.snapshot.queryParams));
+          const queryParams = cloneDeep(this.activatedRoute.snapshot.queryParams);
           this.supportedFilterAttributes.forEach((attr) => delete queryParams[attr]);
           return queryParams;
         })(),
@@ -114,7 +115,7 @@ export class SbSearchFilterComponent implements OnInit, OnChanges, OnDestroy {
 
   private buildAggregatedSearchFilter(): ISearchFilter {
     const queryParams = this.activatedRoute.snapshot.queryParams;
-    const aggregatedSearchFilter: ISearchFilter = JSON.parse(JSON.stringify(this.baseSearchFilter));
+    const aggregatedSearchFilter: ISearchFilter = cloneDeep(this.baseSearchFilter);
 
     Object.keys(queryParams)
       .filter((paramKey) => this.supportedFilterAttributes.includes(paramKey))
@@ -132,7 +133,7 @@ export class SbSearchFilterComponent implements OnInit, OnChanges, OnDestroy {
             ]));
           }
         } else {
-          aggregatedSearchFilter[facet] = queryParams[facet];
+          aggregatedSearchFilter[facet] = Array.isArray(queryParams[facet]) ? queryParams[facet] : [queryParams[facet]];
         }
       });
 
