@@ -19,6 +19,7 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
+    "@project-sunbird/client-services": "3.8.6",
     "common-consumption-styles": "0.0.17",
     "common-form-elements": ">=3.9.0",
     "ngx-chips": "^2.2.2",
