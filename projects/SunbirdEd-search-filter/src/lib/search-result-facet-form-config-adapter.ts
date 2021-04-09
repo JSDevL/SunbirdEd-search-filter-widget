@@ -1,15 +1,15 @@
 import {Facet, FacetValue, IFilterFacet, ISearchFilter} from './facets';
 import {FieldConfig, FieldConfigInputType} from 'common-form-elements';
-import {IFilterFieldTemplateConfig} from './filter-config';
+import {IFacetFilterFieldTemplateConfig} from './facet-filter-field-template-config';
 
 type ISearchResultsFacetsMap = {[facet in Facet]?: FacetValue[]};
 
 export class SearchResultFacetFormConfigAdapter {
   map(
     searchResultFacets: IFilterFacet[],
-    filterFormTemplateConfig: IFilterFieldTemplateConfig[],
+    filterFormTemplateConfig: IFacetFilterFieldTemplateConfig[],
     currentFilter?: ISearchFilter
-  ): FieldConfig<FacetValue>[] {
+  ): FieldConfig<FacetValue, FieldConfigInputType.SELECT>[] {
     const searchResultsFacetsMap: ISearchResultsFacetsMap = searchResultFacets.reduce<{[facet in Facet]: FacetValue[]}>((acc, entry) => {
       acc[entry.name] = entry.values.map(v => v.name);
       return acc;
@@ -42,6 +42,7 @@ export class SearchResultFacetFormConfigAdapter {
         fieldName: config.facet,
         default: (config.multiple && Array.isArray(defaultValue)) ? defaultValue : (defaultValue && defaultValue[0]),
         templateOptions: {
+          inputTypeOptions: { type: config.type },
           label: config.labelText,
           placeHolder: config.placeholderText,
           multiple: config.multiple,

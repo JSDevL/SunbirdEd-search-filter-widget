@@ -1,7 +1,8 @@
 import {Facet} from './facets';
 
-export interface IFilterFieldTemplateConfig {
+export interface IFacetFilterFieldTemplateConfig {
   facet: Facet;
+  type: 'dropdown' | 'pills';
   labelText: string;
   placeholderText: string;
   multiple: boolean;
