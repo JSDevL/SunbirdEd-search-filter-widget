@@ -4,6 +4,6 @@
   "peerDependencies": {
     "@angular/common": "^8.2.14",
     "@angular/core": "^8.2.14",
-    "common-form-elements": ">=3.7.3"
+    "common-form-elements": ">=3.9.0"
   }
 }

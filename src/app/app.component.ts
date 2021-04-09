@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {IFacetFilterFieldTemplateConfig} from '@project-sunbird/search-filter-widget';
 
 @Component({
   selector: 'app-root',
@@ -8,23 +9,33 @@ import {Component} from '@angular/core';
 export class AppComponent {
   currentSearchFilter: any;
 
-  filterFormTemplateConfig = [
+  filterFormTemplateConfig: IFacetFilterFieldTemplateConfig[] = [
     {
       facet: 'se_boards',
+      type: 'dropdown',
       labelText: 'Board',
       placeholderText: 'Select Board',
       multiple: false
     },
     {
       facet: 'se_mediums',
+      type: 'dropdown',
       labelText: 'Medium',
       placeholderText: 'Select Medium',
       multiple: true
     },
     {
       facet: 'se_gradeLevels',
+      type: 'dropdown',
       labelText: 'Class',
       placeholderText: 'Select Class',
+      multiple: true
+    },
+    {
+      facet: 'primaryCategory',
+      type: 'pills',
+      labelText: 'Content Type',
+      placeholderText: 'Select Content Type',
       multiple: true
     }
   ];

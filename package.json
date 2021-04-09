@@ -20,7 +20,7 @@
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
     "common-consumption-styles": "0.0.17",
-    "common-form-elements": "file:../SunbirdEd-forms/common-form-elements-3.7.3.tgz",
+    "common-form-elements": ">=3.9.0",
     "ngx-chips": "^2.2.2",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",

@@ -14,7 +14,7 @@ import {CommonModule} from '@angular/common';
   imports: [
     BrowserModule,
     CommonModule,
-    SbSearchFilterModule,
+    SbSearchFilterModule.forRoot('web'),
     CommonFormElementsModule,
     RouterModule.forRoot([])
   ],
