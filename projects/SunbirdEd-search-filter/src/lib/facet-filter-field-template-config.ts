@@ -1,4 +1,4 @@
-import {Facet} from './facets';
+import {Facet} from './models/facets';
 
 export interface IFacetFilterFieldTemplateConfig {
   facet: Facet;

@@ -10,5 +10,3 @@ export interface IFilterFacetValue {
   name: FacetValue;
   count: string;
 }
-
-export type ISearchFilter = { [key in Facet]: FacetValue[] | FacetValue };

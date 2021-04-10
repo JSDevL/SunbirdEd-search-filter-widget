@@ -8,8 +8,15 @@ import {
 } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PLATFORM_TOKEN} from './injection-tokens';
-import {Facet, ISearchFilter} from './facets';
 import {BaseSearchFilterComponent} from './base-search-filter.component';
+import {IFrameworkCategoryFilterFieldTemplateConfig} from './framework-category-filter-field-template-config';
+import {ISearchFilter} from './models/search-filter';
+import {CategoryTerm, FrameworkCategory} from '@project-sunbird/client-services/models';
+import {map, takeUntil, tap} from 'rxjs/operators';
+import {ISearchFrameworkAssociationsMap} from './models/framework';
+import {SearchFrameworkCategoryFormConfigAdapter} from './search-framework-category-form-config-adapter';
+
+type IFrameworkCategoryFilter = ISearchFilter<FrameworkCategory['code'], CategoryTerm['name'] | CategoryTerm['name'][]>;
 
 @Component({
   selector: 'sb-search-framework-filter',
@@ -23,26 +30,45 @@ import {BaseSearchFilterComponent} from './base-search-filter.component';
     </sb-form>
   `,
   styles: [],
-  providers: []
+  providers: [SearchFrameworkCategoryFormConfigAdapter]
 })
 export class SbSearchFrameworkFilterComponent extends BaseSearchFilterComponent implements OnInit, OnChanges {
-  private static readonly DEFAULT_SUPPORTED_FILTER_ATTRIBUTES = ['board', 'medium', 'gradeLevel', 'subject'];
+  private static readonly DEFAULT_SUPPORTED_FILTER_ATTRIBUTES = ['board', 'medium', 'gradeLevel', 'subject', 'publisher', 'audience'];
 
-  @Input() readonly supportedFilterAttributes: Facet[] = SbSearchFrameworkFilterComponent.DEFAULT_SUPPORTED_FILTER_ATTRIBUTES;
-  @Input() readonly baseSearchFilter: ISearchFilter = {};
-  @Output() searchFilterChange: EventEmitter<ISearchFilter> = new EventEmitter<ISearchFilter>();
+  @Input() readonly supportedFilterAttributes: FrameworkCategory['code'][] = SbSearchFrameworkFilterComponent.DEFAULT_SUPPORTED_FILTER_ATTRIBUTES;
+  @Input() readonly frameworkAssociations: ISearchFrameworkAssociationsMap = {};
+  @Input() readonly baseSearchFilter: IFrameworkCategoryFilter = {};
+  @Input() readonly frameworkCategoryFilterFieldTemplateConfig: IFrameworkCategoryFilterFieldTemplateConfig[] = [];
+  @Output() searchFilterChange: EventEmitter<IFrameworkCategoryFilter> = new EventEmitter<IFrameworkCategoryFilter>();
 
   constructor(
     protected router: Router,
     protected activatedRoute: ActivatedRoute,
+    private searchFrameworkCategoryFormConfigAdapter: SearchFrameworkCategoryFormConfigAdapter,
     @Optional() @Inject(PLATFORM_TOKEN) public platform: string = 'web'
   ) {
     super(router, activatedRoute);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    const newSearchFrameworkAssociationsMap: ISearchFrameworkAssociationsMap = changes.frameworkAssociations && changes.frameworkAssociations.currentValue;
+    if (newSearchFrameworkAssociationsMap) {
+      this.formConfig = this.searchFrameworkCategoryFormConfigAdapter.map(
+        newSearchFrameworkAssociationsMap,
+        this.frameworkCategoryFilterFieldTemplateConfig,
+        this.baseSearchFilter
+      );
+    }
   }
 
   ngOnInit(): void {
+    this.activatedRoute.queryParams
+      .pipe(
+        map(this.buildAggregatedSearchFilter.bind(this)),
+        tap(this.saveOnResetSearchFilter.bind(this)),
+        tap(this.updateCurrentFilter.bind(this)),
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe();
   }
 }

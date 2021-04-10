@@ -4,10 +4,12 @@ import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {CommonFormElementsModule} from 'common-form-elements';
 import {PLATFORM_TOKEN} from './injection-tokens';
+import {SbSearchFrameworkFilterComponent} from './sb-search-framework-filter.component';
 
 @NgModule({
   declarations: [
-    SbSearchFacetFilterComponent
+    SbSearchFacetFilterComponent,
+    SbSearchFrameworkFilterComponent
   ],
   imports: [
     RouterModule,
@@ -15,7 +17,8 @@ import {PLATFORM_TOKEN} from './injection-tokens';
     CommonFormElementsModule
   ],
   exports: [
-    SbSearchFacetFilterComponent
+    SbSearchFacetFilterComponent,
+    SbSearchFrameworkFilterComponent
   ]
 })
 export class SbSearchFilterModule {

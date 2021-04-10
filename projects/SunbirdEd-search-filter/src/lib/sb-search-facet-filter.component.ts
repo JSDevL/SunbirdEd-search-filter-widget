@@ -8,7 +8,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import {Subject} from 'rxjs';
-import {Facet, FacetValue, IFilterFacet, ISearchFilter} from './facets';
+import {Facet, FacetValue, IFilterFacet} from './models/facets';
 import {map, takeUntil, tap} from 'rxjs/operators';
 import {IFacetFilterFieldTemplateConfig} from './facet-filter-field-template-config';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -16,6 +16,7 @@ import {FieldConfig} from 'common-form-elements';
 import {SearchResultFacetFormConfigAdapter} from './search-result-facet-form-config-adapter';
 import {PLATFORM_TOKEN} from './injection-tokens';
 import {BaseSearchFilterComponent} from './base-search-filter.component';
+import {ISearchFilter} from './models/search-filter';
 
 @Component({
   selector: 'sb-search-facet-filter',
@@ -36,13 +37,13 @@ export class SbSearchFacetFilterComponent extends BaseSearchFilterComponent impl
 
   @Input() readonly supportedFilterAttributes: Facet[] = SbSearchFacetFilterComponent.DEFAULT_SUPPORTED_FILTER_ATTRIBUTES;
   @Input() readonly searchResultFacets: IFilterFacet[] = [];
-  @Input() readonly baseSearchFilter: ISearchFilter = {};
+  @Input() readonly baseSearchFilter: ISearchFilter<Facet, FacetValue> = {};
   @Input() readonly filterFormTemplateConfig: IFacetFilterFieldTemplateConfig[] = [];
-  @Output() searchFilterChange: EventEmitter<ISearchFilter> = new EventEmitter<ISearchFilter>();
+  @Output() searchFilterChange: EventEmitter<ISearchFilter<Facet, FacetValue>> = new EventEmitter<ISearchFilter<Facet, FacetValue>>();
 
   protected unsubscribe$ = new Subject<void>();
 
-  public currentFilter?: ISearchFilter;
+  public currentFilter?: ISearchFilter<Facet, FacetValue>;
   public formConfig?: FieldConfig<FacetValue>[];
 
   constructor(
