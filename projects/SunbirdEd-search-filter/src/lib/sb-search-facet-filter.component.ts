@@ -17,6 +17,7 @@ import {SearchResultFacetFormConfigAdapter} from './search-result-facet-form-con
 import {PLATFORM_TOKEN} from './injection-tokens';
 import {BaseSearchFilterComponent} from './base-search-filter.component';
 import {ISearchFilter} from './models/search-filter';
+import {TitleCasePipe} from '@angular/common';
 
 @Component({
   selector: 'sb-search-facet-filter',
@@ -30,7 +31,7 @@ import {ISearchFilter} from './models/search-filter';
     </sb-form>
   `,
   styles: [],
-  providers: [SearchResultFacetFormConfigAdapter]
+  providers: [SearchResultFacetFormConfigAdapter, TitleCasePipe]
 })
 export class SbSearchFacetFilterComponent extends BaseSearchFilterComponent implements OnInit, OnChanges {
   private static readonly DEFAULT_SUPPORTED_FILTER_ATTRIBUTES = [];

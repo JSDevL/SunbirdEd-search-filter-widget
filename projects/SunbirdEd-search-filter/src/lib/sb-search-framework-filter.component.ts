@@ -15,6 +15,7 @@ import {CategoryTerm, FrameworkCategory} from '@project-sunbird/client-services/
 import {map, takeUntil, tap} from 'rxjs/operators';
 import {ISearchFrameworkAssociationsMap} from './models/framework';
 import {SearchFrameworkCategoryFormConfigAdapter} from './search-framework-category-form-config-adapter';
+import {TitleCasePipe} from '@angular/common';
 
 type IFrameworkCategoryFilter = ISearchFilter<FrameworkCategory['code'], CategoryTerm['name'] | CategoryTerm['name'][]>;
 
@@ -30,7 +31,7 @@ type IFrameworkCategoryFilter = ISearchFilter<FrameworkCategory['code'], Categor
     </sb-form>
   `,
   styles: [],
-  providers: [SearchFrameworkCategoryFormConfigAdapter]
+  providers: [SearchFrameworkCategoryFormConfigAdapter, TitleCasePipe]
 })
 export class SbSearchFrameworkFilterComponent extends BaseSearchFilterComponent implements OnInit, OnChanges {
   private static readonly DEFAULT_SUPPORTED_FILTER_ATTRIBUTES = ['board', 'medium', 'gradeLevel', 'subject', 'publisher', 'audience'];
