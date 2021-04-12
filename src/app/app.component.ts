@@ -15,7 +15,7 @@ export class AppComponent {
       type: 'dropdown',
       labelText: 'Board',
       placeholderText: 'Select Board',
-      multiple: true
+      multiple: false
     },
     {
       facet: 'se_mediums',

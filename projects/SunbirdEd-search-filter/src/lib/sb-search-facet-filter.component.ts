@@ -41,6 +41,7 @@ export class SbSearchFacetFilterComponent extends BaseSearchFilterComponent impl
   @Input() readonly filterFormTemplateConfig: IFacetFilterFieldTemplateConfig[] = [];
   @Output() searchFilterChange: EventEmitter<ISearchFilter<Facet, FacetValue>> = new EventEmitter<ISearchFilter<Facet, FacetValue>>();
 
+  protected isFieldMultipleSelectMap: {[field: string]: boolean} = {};
   protected unsubscribe$ = new Subject<void>();
 
   public currentFilter?: ISearchFilter<Facet, FacetValue>;
@@ -57,6 +58,17 @@ export class SbSearchFacetFilterComponent extends BaseSearchFilterComponent impl
 
   ngOnChanges(changes: SimpleChanges) {
     const newSearchResultFacetsValue: IFilterFacet[] = changes.searchResultFacets && changes.searchResultFacets.currentValue;
+    const newFilterFormTemplateConfig: IFacetFilterFieldTemplateConfig[] = changes.filterFormTemplateConfig && changes.filterFormTemplateConfig.currentValue;
+
+    if (newFilterFormTemplateConfig) {
+      this.isFieldMultipleSelectMap = newFilterFormTemplateConfig.reduce<
+        {[facet in Facet]: boolean}
+      >((acc, config: IFacetFilterFieldTemplateConfig) => {
+        acc[config.facet] = config.multiple;
+        return acc;
+      }, {});
+    }
+
     if (newSearchResultFacetsValue) {
       this.formConfig = this.searchResultFacetFormConfigAdapter.map(
         newSearchResultFacetsValue,

@@ -16,6 +16,8 @@ export abstract class BaseSearchFilterComponent implements OnInit, OnChanges, On
 
   private formGroup?: FormGroup;
   private onResetSearchFilter?: IAnySearchFilter;
+
+  protected abstract isFieldMultipleSelectMap: {[field: string]: boolean};
   protected unsubscribe$ = new Subject<void>();
 
   public currentFilter?: IAnySearchFilter;
@@ -64,7 +66,14 @@ export abstract class BaseSearchFilterComponent implements OnInit, OnChanges, On
       queryParams: {
         ...(() => {
           const queryParams = cloneDeep(this.activatedRoute.snapshot.queryParams);
-          this.supportedFilterAttributes.forEach((attr) => delete queryParams[attr]);
+
+          if (this.supportedFilterAttributes && this.supportedFilterAttributes.length) {
+            this.supportedFilterAttributes.forEach((attr) => delete queryParams[attr]);
+            Object.keys(this.currentFilter).forEach((attr) => delete queryParams[attr]);
+            return queryParams;
+          }
+
+          Object.keys(this.currentFilter).forEach((attr) => delete queryParams[attr]);
           return queryParams;
         })(),
         ...searchFilter
@@ -86,20 +95,17 @@ export abstract class BaseSearchFilterComponent implements OnInit, OnChanges, On
     Object.keys(queryParams)
       .filter((paramKey) => this.supportedFilterAttributes.length ? this.supportedFilterAttributes.includes(paramKey) : true)
       .forEach((facet: Facet) => {
-        if (aggregatedSearchFilter[facet]) {
-          if (Array.isArray(aggregatedSearchFilter[facet])) {
+        if (this.isFieldMultipleSelectMap[facet]) {
+          if (aggregatedSearchFilter[facet]) {
             aggregatedSearchFilter[facet] = Array.from(new Set([
-              ...aggregatedSearchFilter[facet] as FacetValue[],
+              ...(Array.isArray(aggregatedSearchFilter[facet]) ? aggregatedSearchFilter[facet] : [aggregatedSearchFilter[facet]]),
               ...(Array.isArray(queryParams[facet]) ? queryParams[facet] : [queryParams[facet]])
             ]));
           } else {
-            aggregatedSearchFilter[facet] = Array.from(new Set([
-              aggregatedSearchFilter[facet] as FacetValue,
-              ...(Array.isArray(queryParams[facet]) ? queryParams[facet] : [queryParams[facet]])
-            ]));
+            aggregatedSearchFilter[facet] = Array.isArray(queryParams[facet]) ? queryParams[facet] : [queryParams[facet]];
           }
         } else {
-          aggregatedSearchFilter[facet] = Array.isArray(queryParams[facet]) ? queryParams[facet] : [queryParams[facet]];
+          aggregatedSearchFilter[facet] = Array.isArray(queryParams[facet]) ? queryParams[facet][0] : queryParams[facet];
         }
       });
 

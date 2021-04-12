@@ -41,6 +41,8 @@ export class SbSearchFrameworkFilterComponent extends BaseSearchFilterComponent 
   @Input() readonly frameworkCategoryFilterFieldTemplateConfig: IFrameworkCategoryFilterFieldTemplateConfig[] = [];
   @Output() searchFilterChange: EventEmitter<IFrameworkCategoryFilter> = new EventEmitter<IFrameworkCategoryFilter>();
 
+  protected isFieldMultipleSelectMap: {[field: string]: boolean} = {};
+
   constructor(
     protected router: Router,
     protected activatedRoute: ActivatedRoute,
@@ -51,7 +53,20 @@ export class SbSearchFrameworkFilterComponent extends BaseSearchFilterComponent 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const newSearchFrameworkAssociationsMap: ISearchFrameworkAssociationsMap = changes.frameworkAssociations && changes.frameworkAssociations.currentValue;
+    const newSearchFrameworkAssociationsMap: ISearchFrameworkAssociationsMap =
+      changes.frameworkAssociations && changes.frameworkAssociations.currentValue;
+    const newFilterFormTemplateConfig: IFrameworkCategoryFilterFieldTemplateConfig[] =
+      changes.frameworkCategoryFilterFieldTemplateConfig && changes.frameworkCategoryFilterFieldTemplateConfig.currentValue;
+
+    if (newFilterFormTemplateConfig) {
+      this.isFieldMultipleSelectMap = newFilterFormTemplateConfig.reduce<
+        {[category in FrameworkCategory['code']]: boolean}
+        >((acc, config: IFrameworkCategoryFilterFieldTemplateConfig) => {
+        acc[config.category] = config.multiple;
+        return acc;
+      }, {});
+    }
+
     if (newSearchFrameworkAssociationsMap) {
       this.formConfig = this.searchFrameworkCategoryFormConfigAdapter.map(
         newSearchFrameworkAssociationsMap,
